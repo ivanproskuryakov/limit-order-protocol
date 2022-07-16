@@ -4,22 +4,29 @@ pragma solidity ^0.8.11;
 
 import "hardhat/console.sol";
 import "./lib/PineUtils.sol";
+import "./gelato/ERC20OrderRouter.sol";
 
 contract Relay {
-    string public message;
+    address payable public erc20OrderRouter;
 
-    address public owner;
+    constructor(address routerAddress) {
+        console.log('initMessage ..... ', routerAddress);
 
-    constructor(string memory initMessage) {
-        owner = msg.sender;
-
-        console.log('initMessage ..... ', initMessage);
-
-        message = initMessage;
+        erc20OrderRouter = payable(routerAddress);
     }
 
     function balanceOf(address account) external view returns (uint256) {
         return address(account).balance;
+    }
+
+    function transfer() external {
+        //        address payable makerAddress;
+        //        // solhint-disable-next-line no-inline-assembly
+        //        assembly {
+        //            makerAddress := shr(96, calldataload(interactiveData.offset))
+        //        }
+        //        IWithdrawable(takerAsset).withdraw(takingAmount);
+        //        makerAddress.transfer(takingAmount);
     }
 
     function balanceLog(IERC20 _token) view public {

@@ -2,6 +2,8 @@ const Wallet = require('ethereumjs-wallet').default;
 
 const TokenMock = artifacts.require('TokenMock');
 const Relay = artifacts.require('Relay');
+const GelatoPineCore = artifacts.require('gelato/GelatoPineCore');
+const ERC20OrderRouter = artifacts.require('gelato/ERC20OrderRouter');
 
 describe('LimitOrderProtocol', async function () {
     let addr1;
@@ -16,12 +18,16 @@ describe('LimitOrderProtocol', async function () {
 
     beforeEach(async function () {
         this.dai = await TokenMock.new('DAI', 'DAI');
+        this.gel = await TokenMock.new('GEL', 'GEL');
 
         await this.dai.mint(addr1, '1000000');
     });
 
     it('relay', async function () {
-        this.relay = await Relay.new('1111');
+        this.gelatoPineCore = await GelatoPineCore.new(this.dai.address);
+        this.erc20orderRouter = await ERC20OrderRouter.new(this.gelatoPineCore.address);
+
+        this.relay = await Relay.new(this.erc20orderRouter.address);
 
         const balanceDai = await this.dai.balanceOf(addr1)
 
