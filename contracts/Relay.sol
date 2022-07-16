@@ -7,26 +7,51 @@ import "./lib/PineUtils.sol";
 import "./gelato/ERC20OrderRouter.sol";
 
 contract Relay {
-    address payable public erc20OrderRouter;
+    address payable public router;
 
-    constructor(address routerAddress) {
-        console.log('initMessage ..... ', routerAddress);
+    constructor(address _address) {
+        console.log('initMessage ..... ', _address);
 
-        erc20OrderRouter = payable(routerAddress);
+        router = payable(_address);
     }
 
     function balanceOf(address account) external view returns (uint256) {
         return address(account).balance;
     }
 
-    function transfer() external {
+    function transfer(
+        uint256 _amount,
+        address _module,
+        address _inputToken,
+        address payable _owner,
+        address _witness,
+        bytes calldata _data,
+        bytes32 _secret
+    ) external {
         //        address payable makerAddress;
         //        // solhint-disable-next-line no-inline-assembly
         //        assembly {
         //            makerAddress := shr(96, calldataload(interactiveData.offset))
         //        }
         //        IWithdrawable(takerAsset).withdraw(takingAmount);
-        //        makerAddress.transfer(takingAmount);
+
+        //uint256 _amount,
+        //address _module,
+        //address _inputToken,
+        //address payable _owner,
+        //address _witness,
+        //bytes calldata _data,
+        //bytes32 _secret
+        
+        router.depositToken(
+            _amount,
+            _module,
+            _inputToken,
+            _owner,
+            _witness,
+            _data,
+            _secret
+        );
     }
 
     function balanceLog(IERC20 _token) view public {

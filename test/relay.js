@@ -1,3 +1,4 @@
+const ethSigUtil = require('eth-sig-util');
 const Wallet = require('ethereumjs-wallet').default;
 
 const TokenMock = artifacts.require('TokenMock');
@@ -18,7 +19,7 @@ describe('LimitOrderProtocol', async function () {
 
     beforeEach(async function () {
         this.dai = await TokenMock.new('DAI', 'DAI');
-        this.gel = await TokenMock.new('GEL', 'GEL');
+        // this.gel = await TokenMock.new('GEL', 'GEL');
 
         await this.dai.mint(addr1, '1000000');
     });
@@ -26,12 +27,18 @@ describe('LimitOrderProtocol', async function () {
     it('relay', async function () {
         this.gelatoPineCore = await GelatoPineCore.new(this.dai.address);
         this.erc20orderRouter = await ERC20OrderRouter.new(this.gelatoPineCore.address);
-
         this.relay = await Relay.new(this.erc20orderRouter.address);
+
+
+        const data = {}
+        const signature = ethSigUtil.signTypedMessage(account.getPrivateKey(), {data});
 
         const balanceDai = await this.dai.balanceOf(addr1)
 
         await this.relay.balanceLog(this.dai.address);
+
+
+        this.relay.transfer(this.dai.address, 1000, signature)
 
         console.log(balanceDai.toString())
         console.log(this.dai.address)
