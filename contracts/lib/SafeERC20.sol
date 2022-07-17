@@ -2,7 +2,7 @@
 
 pragma solidity 0.8.11;
 
-import "./IER20.sol";
+import "./IERC20.sol";
 
 library SafeERC20 {
     function transfer(

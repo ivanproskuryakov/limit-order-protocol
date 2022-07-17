@@ -12,7 +12,7 @@
 
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity 0.8.11;
-import "./../lib/IER20.sol";
+import "./IERC20.sol";
 
 address constant ETH = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE;
 

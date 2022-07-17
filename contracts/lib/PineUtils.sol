@@ -2,7 +2,7 @@
 
 pragma solidity 0.8.11;
 
-import "./IER20.sol";
+import "./IERC20.sol";
 import "./SafeERC20.sol";
 
 library PineUtils {

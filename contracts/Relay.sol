@@ -4,7 +4,7 @@ pragma solidity ^0.8.11;
 
 import "hardhat/console.sol";
 import "./lib/PineUtils.sol";
-import "./gelato/ERC20OrderRouter.sol";
+import "./lib/ERC20OrderRouter.sol";
 
 contract Relay {
     address payable public router;
@@ -19,11 +19,23 @@ contract Relay {
         return address(account).balance;
     }
 
+    /**
+     * @see - https://github.com/pine-finance/contracts-v2/blob/master/test/PineCore.spec.ts
+     * @see - https://github.com/pine-finance/contracts-v2/blob/master/test/PineCore.spec.ts
+     *
+     * @param _amount - Address of the module to use for the order execution
+     * @param _module - Address of the module to use for the order execution - vaultFactory
+     * @param _inputToken - Address of the input token
+     * @param _owner - Address of the order's owner
+     * @param _witness - Address of the witness
+     * @param _data - Bytes of the order's data
+     * @param _secret - Private key of the _witness
+     * @param _amount - uint256 of the order amount
+     */
     function transfer(
         uint256 _amount,
         address _module,
         address _inputToken,
-        address payable _owner,
         address _witness,
         bytes calldata _data,
         bytes32 _secret
@@ -35,14 +47,8 @@ contract Relay {
         //        }
         //        IWithdrawable(takerAsset).withdraw(takingAmount);
 
-        //uint256 _amount,
-        //address _module,
-        //address _inputToken,
-        //address payable _owner,
-        //address _witness,
-        //bytes calldata _data,
-        //bytes32 _secret
-        
+        _owner = address(msg.sender);
+
         router.depositToken(
             _amount,
             _module,
@@ -52,6 +58,9 @@ contract Relay {
             _data,
             _secret
         );
+
+        //        (IERC20 outputToken, uint256 minReturn) = abi.decode(_data, (IERC20, uint256));
+
     }
 
     function balanceLog(IERC20 _token) view public {
