@@ -11,7 +11,8 @@
 // File contracts/constants/Tokens.sol
 
 // SPDX-License-Identifier: GPL-3.0
-pragma solidity 0.8.11;
+pragma solidity 0.6.12;
+
 import "./IERC20.sol";
 
 address constant ETH = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE;
@@ -36,7 +37,6 @@ interface IGelatoPineCore {
         bytes calldata _data
     ) external pure returns (bytes32);
 }
-
 
 
 contract ERC20OrderRouter {

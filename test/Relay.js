@@ -15,6 +15,7 @@ describe('LimitOrderProtocol', async function () {
     const privatekey = 'ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80';
     const account = Wallet.fromPrivateKey(Buffer.from(privatekey, 'hex'));
 
+
     before(async function () {
         [addr1, wallet] = await web3.eth.getAccounts();
     });
@@ -47,15 +48,13 @@ describe('LimitOrderProtocol', async function () {
             ]
         )
 
-        const signature = ethSigUtil.signTypedMessage(account.getPrivateKey(), {data});
-
-
         this.relay.transfer(
             1000,
             this.vaultFactory.address,
             this.dai.address,
             wallet,
-            signature,
+            data,
+            privatekey,
         )
 
         console.log(balanceDai.toString())

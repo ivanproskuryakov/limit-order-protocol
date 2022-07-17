@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 
-pragma solidity ^0.8.11;
+pragma solidity ^0.6.12;
 
 
 import "./IERC20.sol";

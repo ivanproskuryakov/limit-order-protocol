@@ -14,7 +14,7 @@
 
 // File: contracts/interfaces/IERC20.sol
 
-pragma solidity 0.6.11;
+pragma solidity 0.6.12;
 
 import "./IERC20.sol";
 
