@@ -9,7 +9,7 @@
 //  - Agustin Aguilar <@agusx1211>
 
 // solhint-disable-next-line
-pragma solidity 0.6.12;
+pragma solidity ^0.6.12;
 
 import {PineCore, IModule, IERC20} from "./PineCore.sol";
 

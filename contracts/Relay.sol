@@ -1,27 +1,33 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.6.12;
+pragma solidity ^0.8.11;
 
 import "hardhat/console.sol";
 import "./lib/PineUtils.sol";
 import "./lib/ERC20OrderRouter.sol";
 
+interface IRouter {
+    function depositToken(
+        uint256 _amount,
+        address _module,
+        IERC20 _inputToken,
+        address payable _owner,
+        address _witness,
+        bytes calldata _data,
+        bytes32 _secret
+    ) external;
+}
+
 contract Relay {
-    address payable public router;
+    IRouter router;
 
-    constructor(address _address) {
-        console.log('initMessage ..... ', _address);
-
-        router = payable(_address);
+    constructor(IRouter _address) {
+        router = _address;
     }
 
-    function balanceOf(address account) external view returns (uint256) {
-        return address(account).balance;
-    }
-
-    /**
+    /*
      * @see - https://github.com/pine-finance/contracts-v2/blob/master/test/PineCore.spec.ts
-     * @see - https://github.com/pine-finance/contracts-v2/blob/master/test/PineCore.spec.ts
+     * @see - https://github.com/pine-finance/contracts-v2/tree/master/contracts/mocks
      *
      * @param _amount - Address of the module to use for the order execution
      * @param _module - Address of the module to use for the order execution - vaultFactory
@@ -35,40 +41,25 @@ contract Relay {
     function transfer(
         uint256 _amount,
         address _module,
-        address _inputToken,
+        IERC20 _inputToken,
         address _witness,
         bytes calldata _data,
         bytes32 _secret
     ) external {
-        //        address payable makerAddress;
-        //        // solhint-disable-next-line no-inline-assembly
-        //        assembly {
-        //            makerAddress := shr(96, calldataload(interactiveData.offset))
-        //        }
-        //        IWithdrawable(takerAsset).withdraw(takingAmount);
+        address payable owner = payable(msg.sender);
 
-        _owner = address(msg.sender);
+//        _inputToken.transferFrom(owner, address(this), _amount);
+//        _inputToken.transferFrom(owner, address(vaultAddress), _amount);
 
         router.depositToken(
             _amount,
             _module,
             _inputToken,
-            _owner,
+            owner,
             _witness,
             _data,
             _secret
         );
-
-        //        (IERC20 outputToken, uint256 minReturn) = abi.decode(_data, (IERC20, uint256));
-
     }
 
-    function balanceLog(IERC20 _token) view public {
-        uint256 amount = PineUtils.balanceOf(_token, address(msg.sender));
-
-        console.log('balanceLog _token ..... ', address(_token));
-        console.log('balanceLog sender ..... ', address(msg.sender));
-        console.log('balanceLog sender ..... ', msg.sender);
-        console.log('balanceLog amount ..... ', amount);
-    }
 }

@@ -3,7 +3,6 @@
 pragma solidity ^0.6.12;
 
 
-import "./IERC20.sol";
 import "./Fabric.sol";
 
 

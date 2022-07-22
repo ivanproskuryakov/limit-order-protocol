@@ -11,9 +11,11 @@
 // File contracts/constants/Tokens.sol
 
 // SPDX-License-Identifier: GPL-3.0
-pragma solidity 0.6.12;
+pragma solidity 0.8.11;
 
 import "./IERC20.sol";
+import "./PineUtils.sol";
+import "hardhat/console.sol";
 
 address constant ETH = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE;
 
@@ -109,18 +111,22 @@ contract ERC20OrderRouter {
             "ERC20OrderRouter.depositToken: ONLY_ERC20"
         );
 
-        bytes32 key =
-        gelatoPineCore.keyOf(_module, _inputToken, _owner, _witness, _data);
+        bytes32 key = gelatoPineCore.keyOf(_module, _inputToken, _owner, _witness, _data);
+        address vaultAddress = gelatoPineCore.vaultOfOrder(
+            _module,
+            _inputToken,
+            _owner,
+            _witness,
+            _data
+        );
+
+        console.log('_inputToken ...', _inputToken);
+        console.log('msg.sender ...', msg.sender, IERC20(_inputToken).balanceOf(msg.sender));
+        console.log('vaultAddress ...', vaultAddress, IERC20(_inputToken).balanceOf(vaultAddress));
 
         IERC20(_inputToken).transferFrom(
             msg.sender,
-            gelatoPineCore.vaultOfOrder(
-                _module,
-                _inputToken,
-                _owner,
-                _witness,
-                _data
-            ),
+            vaultAddress,
             _amount
         );
 
